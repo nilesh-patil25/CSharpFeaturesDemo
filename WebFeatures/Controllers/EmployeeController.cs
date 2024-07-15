@@ -22,11 +22,23 @@ namespace WebFeatures.Controllers
         [HttpGet("GetAllEmployees")]
         public IActionResult GetAllEmployee()
         {
-            _logger.LogInformation("Getting all employees");
-            var employees = employeeService.GetAllEmployees();
-            _logger.LogInformation("Retrieved {EmployeeCount} employees", employees.Count);
-            return Ok(employees);
+            try
+            {
+                _logger.LogInformation("Getting all employees");
+
+                var employees = employeeService.GetAllEmployees();
+
+                _logger.LogInformation("Retrieved {EmployeeCount} employees", employees.Count);
+
+                return Ok(employees);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting all employees");
+                return StatusCode(500, "An internal server error occurred");
+            }
         }
+
         #endregion
     }
 }
